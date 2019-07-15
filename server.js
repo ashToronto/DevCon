@@ -8,6 +8,9 @@ const PORT = process.env.PORT || 3000
 // Connecting mongo db from config file
 connectDB()
 
+//Body parser replaced with built in express parser
+app.use(express.json({ extended: false }))
+
 app.get('/', (req, res) => res.send('API is running'))
 
 // Define Routes/api

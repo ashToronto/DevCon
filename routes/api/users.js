@@ -1,8 +1,11 @@
-const express   = require('express')
-const router    = express.Router()
+const express = require('express')
+const router = express.Router()
 
-// @route   GET api/users
+// @route   POST api/users
 // @access  Public (no web token needed)
-router.get('/', (req, res) => res.send('User Routes'))
+router.post('/', (req, res) => {
+  console.log(req.body)
+  res.send('User Routes')
+})
 
 module.exports = router
