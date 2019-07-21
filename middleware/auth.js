@@ -8,13 +8,13 @@ module.exports = function(req, res, next){
 
   //check for null token
   if (!token) {
-    res.status(401).json({ msg: 'autherization denied, null value'})
+    res.status(401).json({ msg: 'autherization denied, null value, No token exists'})
   }
 
   //verify token, if valid decode else error
   try {
-    const decode = jwt.verify(token, config.get('jwtSecret'))
-    req.user = decoded.user
+    const decode = jwt.verify(token, config.get('jwtToken'))
+    req.user = decode.user
     next()
   } catch(err) {
     res.status(401).json({ msg: 'token is invalid' })
