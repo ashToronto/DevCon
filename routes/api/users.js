@@ -36,6 +36,8 @@ router.post('/', [
       r: 'pg',
       d: 'mm'
     });
+
+    // Create new user instance 
     user = new User({
       name,
       email,
