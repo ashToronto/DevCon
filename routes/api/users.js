@@ -37,7 +37,7 @@ router.post('/', [
       d: 'mm'
     });
 
-    // Create new user instance 
+    // Create new user instance
     user = new User({
       name,
       email,

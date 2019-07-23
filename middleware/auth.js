@@ -1,7 +1,7 @@
 const jwt       = require('jsonwebtoken')
 const config    = require('config')
 
-// Middleware function - access to req, res lifecycle
+// Middleware function - access to req, res lifecycle and to decode JWT token
 module.exports = function(req, res, next){
   // Get token from header
   const token = req.header('x-auth-token')
