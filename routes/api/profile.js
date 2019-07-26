@@ -55,7 +55,7 @@ async (req, res) => {
     instagram
   } = req.body
 
-  // Build profile object to be inserted
+  // Build profile object
   const profileFields = {}
   profileFields.user = req.user.id
   if (company) profileFields.company                   = company
@@ -65,7 +65,7 @@ async (req, res) => {
   if (status) profileFields.status                     = status
   if (githubUserName) profileFields.githubUserName     = company
 
-  if (skills) profileFields.skills                     = skills.split(',').map(skill => skill.trim())
+  if (skills) profileFields.skills                     = skills.split(', ').map(skill => skill.trim())
   // console.log(profileFields.skills)
   // res.send('Worked')
 
@@ -77,7 +77,22 @@ async (req, res) => {
 
   // Insert object
   try {
-    let Profile = await Profile.findOne({ user: req.user.id }
+    let profile = await Profile.findOne({ user: req.user.id })
+
+      //update profile variable
+      if (profile){
+        profile = await Profile.findOneAndUpdate(
+          {user: req.user.id},
+          {$set: profileFields },
+          {new: true}
+        )
+        return res.json(profile)
+      }
+
+      // create a new profile
+      profile = new Profile(profileFields)
+      await profile.save()
+      res.json(profile)
   } catch(err) {
     console.error(err.message)
     res.status(500).send('Server error')

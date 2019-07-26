@@ -18,7 +18,7 @@ const profileSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  skille: {
+  skills: {
     type: [String],
     required: true
   },
