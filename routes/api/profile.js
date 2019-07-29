@@ -122,11 +122,25 @@ router.get('/', async (req, res) => {
 router.get('/user/:user_id', async (req, res) => {
   const profile = await Profile.findOne({ user: req.params.user_id }).populate('user', ['name', 'avatar'])
     if (!profile){
-      return res.status(400).json({ msg: 'no profile exist' })
+      return res.status(400).json({ msg: 'no profile found' })
     }
 
     try {
       res.json(profile)
+    } catch(err) {
+      console.error(err.message)
+      res.status(500).send('Server error, profile may not exist')
+    }
+})
+
+// @route   GET api/profile/delete
+// @route   GET api/profile will delete user and profile
+// @access  Private
+router.delete('/', auth, async (req, res) => {
+    try {
+      await Profile.findOneAndRemove({ user: req.user.id }) // remove profile
+      await User.findOneAndRemove({ _id: req.user.id })     // remove User
+      res.json({msg: 'user deleted'})
     } catch(err) {
       console.error(err.message)
       res.status(500).send('Server error')
