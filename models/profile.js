@@ -33,18 +33,15 @@ const profileSchema = new mongoose.Schema({
     {
       title: {
         type: String,
-        required: true
       },
       company: {
         type: String,
-        required: true
       },
       location: {
         type: String
       },
       from: {
         type: Date,
-        required: true
       },
       to: {
         type: Date
