@@ -7,7 +7,7 @@ const User                              = require('../../models/User')
 const { check, validationResult }       = require('express-validator')
 
 // @route   GET api/profile will get all user profiles
-// @route   GET api/profile/me will get my profile
+// @desc    GET api/profile/me will get my profile
 // @access  Private
 router.get('/me', auth, async (req, res) => {
   try {
@@ -26,7 +26,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 // @route   Post api/profile
-// @route   Post api/profile will create my profile
+// @desc    Post api/profile will create my profile
 // @access  Private
 router.post('/', [auth,
   [
@@ -100,7 +100,7 @@ async (req, res) => {
 });
 
 // @route   GET api/profile
-// @route   GET api/profile will display all profiles without auth
+// @desc    GET api/profile will display all profiles without auth
 // @access  Public
 router.get('/', async (req, res) => {
   const profiles = await Profile.find().populate('user', ['name', 'avatar'])
@@ -117,7 +117,7 @@ router.get('/', async (req, res) => {
 })
 
 // @route   GET api/profile/user/:user_id
-// @route   GET api/profile will display single profile of specific user
+// @desc    GET api/profile will display single profile of specific user
 // @access  Public
 router.get('/user/:user_id', async (req, res) => {
   const profile = await Profile.findOne({ user: req.params.user_id }).populate('user', ['name', 'avatar'])
@@ -166,7 +166,7 @@ router.put('/experience', auth, async (req,res) => {
 });
 
 // @route   Delete api/profile/experience/:exp_id
-// @route   delete a user experience within the profile.experience model
+// @desc    delete a user experience within the profile.experience model
 // @access  Private
 router.delete('/experience/:exp_id', auth, async (req,res) => {
   try {
@@ -182,7 +182,7 @@ router.delete('/experience/:exp_id', auth, async (req,res) => {
 });
 
 // @route   Put api/profile/education
-// @route   post a users education with the profile.education model
+// @desc    post a users education with the profile.education model
 // @access  Private
 router.put('/education', auth, async (req,res) => {
   const { school, degree, fieldOfStudy, from, to, current, description } = req.body
@@ -199,9 +199,9 @@ router.put('/education', auth, async (req,res) => {
 });
 
 // @route   Delete api/profile/education
-// @route   Delete a users education
+// @desc    Delete a users education
 // @access  Private
-router.delete('/experience/:edu_id', auth, async (req,res) => {
+router.delete('/education/:edu_id', auth, async (req,res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id })
     const deleteIndex = profile.education.map(item => item.id).indexOf(req.params.exp_id)
