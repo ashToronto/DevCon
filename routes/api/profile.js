@@ -158,9 +158,10 @@ router.put('/experience', auth, async (req,res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id })
     profile.experiences.unshift(newExp)
+    await profile.save()
     res.json(profile)
   } catch(err) {
-    console.error(err)
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 });
@@ -176,7 +177,7 @@ router.delete('/experience/:exp_id', auth, async (req,res) => {
     await profile.save()
     res.json(profile)
   } catch(err) {
-    console.error(err)
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 });
@@ -191,9 +192,10 @@ router.put('/education', auth, async (req,res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id })
     profile.education.unshift(newEdu)
+    await profile.save()
     res.json(profile)
   } catch(err) {
-    console.error(err)
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 });
@@ -204,12 +206,12 @@ router.put('/education', auth, async (req,res) => {
 router.delete('/education/:edu_id', auth, async (req,res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id })
-    const deleteIndex = profile.education.map(item => item.id).indexOf(req.params.exp_id)
-    profile.experiences.splice(deleteIndex, 1)
+    const deleteIndex = profile.education.map(item => item.id).indexOf(req.params.edu_id)
+    profile.education.splice(deleteIndex, 1)
     await profile.save()
     res.json(profile)
   } catch(err) {
-    console.error(err)
+    console.error(err.message)
     res.status(500).send('Server error')
   }
 });
