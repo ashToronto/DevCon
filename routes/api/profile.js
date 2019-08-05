@@ -216,4 +216,10 @@ router.delete('/education/:edu_id', auth, async (req,res) => {
   }
 });
 
+// @route   Get api/profile/github/:username
+// @desc    get github repos for this user
+// @access  Private
+
+
+
 module.exports = router
