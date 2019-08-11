@@ -2,7 +2,7 @@ const express                           = require('express')
 const router                            = express.Router()
 const auth                              = require('../../middleware/auth')
 
-const Post                              = require('../../models/posts')
+const Post                              = require('../../models/Posts')
 const User                              = require('../../models/User')
 const Profile                           = require('../../models/profile')
 const { check, validationResult }       = require('express-validator')
@@ -14,9 +14,7 @@ const config                            = require('config')
 // @access  Private
 router.post('/', [auth,
   [
-    check('text','Text is required')
-    .not()
-    .isEmpty()
+    check('text','Text is required').not().isEmpty()
   ]
 ],
   async (req, res) => {
@@ -26,14 +24,14 @@ router.post('/', [auth,
     }
 
     try {
-      const user = await Post.findById(req.user.id).populate('user', ['name', 'avatar'])
+      const user = await User.findById(req.user.id).select('-password')
 
-      const newPost = {
+      const newPost = new Post({
         text: req.body.text,
         name: user.name,
         avatar: user.avatar,
-        user: req.body.id
-      }
+        user: req.user.id
+      })
 
       const post = await newPost.save()
       res.json(post)
@@ -60,13 +58,14 @@ router.post('/', [auth,
   // @route   Delete api/posts/:id
   // @desc    Delete a post
   // @access  Private
-  router.delete('/', auth, async (req, res) => {
+  router.delete('/:id', auth, async (req, res) => {
     try {
       const post = await Post.findById(req.params.id)
       if (!post){
         return res.status(404).json({msg: 'Post not found' })
       }
-      res.json(post)
+      await post.remove();
+      res.json({ msg: 'Post deleted' });
     } catch {
       console.error(err.message)
       res.status(500).send('Server error')

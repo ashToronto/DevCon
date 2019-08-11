@@ -98,9 +98,19 @@ const profileSchema = new mongoose.Schema({
     }
   },
 
-  resume: {
-    type: String
-  },
+  // Make skills different and write seperate routes so that skills have a skill level
+  // skills: [
+  //   {
+  //     name: {
+  //       type: String,
+  //       required: true
+  //     },
+  //     effeciency: {
+  //       type: Number,
+  //       required: true
+  //     }
+  //   }
+  // ],
 
   date: {
     type: Date,
